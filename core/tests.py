@@ -67,7 +67,7 @@ class TestSetUp(APITestCase):
         res = self.client.get(self.match_url)
         self.assertEqual(res.status_code, 200)
 
-    def test_get_match_details(self):
+    def test_get_match_details_by_name(self):
         """test for getting data by name"""
         kwargs = {"name": "Real Madrid vs Barcelona"}
         res = self.client.get(retriveMatch(self.request,**kwargs))
@@ -77,7 +77,7 @@ class TestSetUp(APITestCase):
         # pdb.set_trace()
         self.assertEqual(return_val, check_val)
 
-    def test_get_match_details(self):
+    def test_get_match_details_by_ordering(self):
         """test for getting data by sport and ordering"""
         kwargs = {"sport": "football", "ordering": "start_time"}
         res = self.client.get(retriveMatch(self.request,**kwargs))
