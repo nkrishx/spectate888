@@ -65,8 +65,10 @@ def retriveMatch(request,id):
 def listMatch(request):
     start_time_param = request.query_params.get('ordering')
     order_by_string  = "start_time"
-    if '-' in start_time_param:
+    
+    if start_time_param.startswith('-'):
         order_by_string = "-" + order_by_string
+    
     f = MatchFilter(request.GET, queryset=Match.objects.all().order_by(order_by_string))
     values = f.qs.values("id","url","name","start_time")
     return  Response(values)
