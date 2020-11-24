@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+""""django model classes seperating the various entites for easy querying and maintaining."""
+"""realtionships are setup between classes"""
 
 class Sport(models.Model):
     id = models.IntegerField(primary_key=True)

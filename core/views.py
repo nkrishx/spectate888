@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 
 #Serializers
-
+"""serializers for the model data"""
 class SelectionsSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -56,23 +56,26 @@ def retriveMatch(request,id):
 
         }
         return Response(context_dict)
-    except:
+    except Match.DoesNotExist:
         content = {'Id not found': 'Match Id not found'}
         return Response(content, status=status.HTTP_404_NOT_FOUND)
 
-
+"""simgle view for handling the get request based filtering and ordering operations"""
 @api_view(['GET'])
-def listMatch(request):
-    start_time_param = request.query_params.get('ordering')
-    order_by_string  = "start_time"
-    
-    if start_time_param.startswith('-'):
-        order_by_string = "-" + order_by_string
-    
-    f = MatchFilter(request.GET, queryset=Match.objects.all().order_by(order_by_string))
-    values = f.qs.values("id","url","name","start_time")
-    return  Response(values)
+def listMatch(request,**kwargs):
+    ordering_param = request.query_params.get('ordering')
+    if ordering_param:
+        if ordering_param.startswith('-'):
+            ordering_param = '-' + ordering_param.split('-')[1]
+        f = MatchFilter(request.GET, queryset=Match.objects.all().order_by(ordering_param))
+        values = f.qs.values("id","url","name","start_time")
+        return Response(values)
+    else:
+        f = MatchFilter(request.GET, queryset=Match.objects.all())
+        values = f.qs.values("id","url","name","start_time")
+        return Response(values)
 
+"""view for handling the newEvent and update event type"""
 @api_view(['GET','POST'])
 def Event(request):
     if request.data["message_type"] == "NewEvent":
