@@ -1,4 +1,4 @@
-# spectate888
+# spectate888 application API provider
 
 ### Usage
 * Clone the repo.
